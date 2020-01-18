@@ -1,1 +1,20 @@
+//-- Back Button Twice Pressed -//
 
+
+
+//-- Back Button Alert Confirm Exit --//
+
+
+
+//-- Back Button Up Navigation --//
+
+@Override
+    public boolean onSupportNavigateUp() {
+
+        onBackPressed();
+        return true;
+    }
+    
+    // Also need to declare in Manifest the parent activity name
+    
+    
