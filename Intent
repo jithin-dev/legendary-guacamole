@@ -1,0 +1,6 @@
+Bundle bundle = getIntent().getExtras();
+
+        if (bundle != null) {
+
+            pdfUrl = bundle.getString("pdf_url");
+        }
