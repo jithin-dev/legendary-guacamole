@@ -1,11 +1,150 @@
-// RecyclerView
-
 // Model
+First create Model class with the required parameters, Create getter, setter and constructor
+
+
 
 // Item XML
+Create item XML with card or separator line, including all the necessary parameters
+
+
 
 // Adapter
+public class ScrapLiveAdapter extends RecyclerView.Adapter<ScrapLiveAdapter.ViewHolder> {
 
-// Activity
+    private List<ScrapLiveModel> scrapLiveModelList;
+
+
+    // Provide a reference to the views for each data item
+    // Complex data items may need more than one view per item, and
+    // you provide access to all the views for a data item in a view holder
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        // each data item is just a string in this case
+        TextView auctionInfoText;
+        TextView startDateText;
+        TextView endDateText;
+
+        public View layout;
+
+        public ViewHolder(View v) {
+            super(v);
+            layout = v;
+
+            auctionInfoText = v.findViewById(R.id.auction_info_text);
+            startDateText = v.findViewById(R.id.start_date_text);
+            endDateText = v.findViewById(R.id.end_date_text);
+
+        }
+    }
+
+    // Provide a suitable constructor (depends on the kind of dataset)
+    public ScrapLiveAdapter(List<ScrapLiveModel> myDataset) {
+        scrapLiveModelList = myDataset;
+    }
+
+    // Create new views (invoked by the layout manager)
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent,
+                                         int viewType) {
+        // create a new view
+        LayoutInflater inflater = LayoutInflater.from(
+                parent.getContext());
+        View v =
+                inflater.inflate(R.layout.scraplive_list_item, parent, false);
+        // set the view's size, margins, paddings and layout parameters
+        ViewHolder vh = new ViewHolder(v);
+        return vh;
+    }
+
+    // Replace the contents of a view (invoked by the layout manager)
+    @Override
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        // - get element from your dataset at this position
+        // - replace the contents of the view with that element
+
+        ScrapLiveModel scrapLiveModel = scrapLiveModelList.get(position);
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ScrapLiveModel scrapLiveModel = scrapLiveModelList.get(position);
+
+                Intent intent = new Intent(v.getContext(), AuctionRoomActivity.class);
+                intent.putExtra("name", scrapLiveModel.getAuctionInformation());
+                intent.putExtra("community_no", scrapLiveModel.getCommunityNo());
+                intent.putExtra("seller_id", scrapLiveModel.getSellerId());
+                intent.putExtra("start_date", scrapLiveModel.getStartDate());
+                intent.putExtra("select_type", scrapLiveModel.getSelectType());
+                v.getContext().startActivity(intent);
+
+            }
+        });
+
+
+        // Set Date
+        String date = scrapLiveModel.getStartDate();
+        SimpleDateFormat spf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date newDate= null;
+        try {
+            newDate = spf.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        spf= new SimpleDateFormat("MMM dd, yyyy, hh:mm aaa", Locale.getDefault());
+        date = spf.format(newDate);
+
+        // Set End Date
+        String date2 = scrapLiveModel.getEndsOn();
+        SimpleDateFormat spf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date newDate2 = null;
+        try {
+            newDate2 = spf2.parse(date2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        spf2= new SimpleDateFormat("MMM dd, yyyy, hh:mm aaa", Locale.getDefault());
+        date2 = spf2.format(newDate2);
+
+        holder.auctionInfoText.setText(scrapLiveModel.getAuctionInformation());
+        holder.startDateText.setText(date);
+        holder.endDateText.setText(date2);
+    }
+
+    // Return the size of your dataset (invoked by the layout manager)
+    @Override
+    public int getItemCount() {
+        return scrapLiveModelList.size();
+    }
+}
+
+
 
 // XML
+<android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/recycler_view"
+        android:scrollbars="vertical"/>
+        
+        
+
+// Activity
+    RecyclerView recyclerView;
+    List<AuctionRoomModel> auctionRoomModelList;
+    
+    recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        // use a linear layout manager
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        auctionRoomModelList = new ArrayList<>();
+        
+        auctionRoomModelList.add(new AuctionRoomModel(lot,product_name,intis_lot_id,start_date,end_date,start_price,unit_measure,max_bid,count,bid_increment,bid_amount,status,"","no",auto));
+        
+        AuctionRoomAdapter auctionRoomAdapter = new AuctionRoomAdapter(auctionRoomModelList);
+
+                            recyclerView.setItemViewCacheSize(auctionRoomModelList.size());
+                            recyclerView.setAdapter(auctionRoomAdapter);
