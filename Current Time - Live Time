@@ -1,0 +1,37 @@
+// Declare
+TextView currentTime;
+    Timer mTimer;
+
+    TimerTask timerTask = new TimerTask() {
+        @Override
+        public void run() {
+
+            AuctionRoomActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    showTime();
+                }
+            });
+        }
+    };
+    
+            
+// Initialize
+currentTime = findViewById(R.id.current_time);
+        showTime();
+
+        // Update time Automatically
+        mTimer = new Timer();
+        mTimer.scheduleAtFixedRate(timerTask, 0 , 1000);  // Interval to update UI
+        
+        
+// Method
+public void showTime() {
+
+        Calendar cal = Calendar.getInstance();
+        Date date=cal.getTime();
+        DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss a", Locale.getDefault());
+        String formattedDate=dateFormat.format(date);
+
+        currentTime.setText(formattedDate);
+    }
