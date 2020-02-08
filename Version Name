@@ -1,0 +1,12 @@
+// Use MainActivity.this or context
+
+try {
+    PackageInfo pInfo = MainActivity.this.getPackageManager().getPackageInfo(getPackageName(), 0);
+    String version = pInfo.versionName;
+} catch (PackageManager.NameNotFoundException e) {
+    e.printStackTrace();
+}
+
+// And you can get the version code by using this
+
+int verCode = pInfo.versionCode;
