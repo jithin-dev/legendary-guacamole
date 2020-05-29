@@ -1,3 +1,29 @@
 // Alert Dialog
 
+// Logout Dialog
+
+new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogTheme)
+                    .setTitle("Confirm Logout")
+                    .setMessage("Are you sure you want to logout?")
+                    .setNegativeButton(android.R.string.no, null)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                            if (checkConnection()) {
+                                logoutApi();
+                            }
+                            else {
+                                Toast.makeText(MainActivity.this, "Please check your Internet Connection!", Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    }).create().show();
+                    
+
 // Theme
+
+<!--Alert Dialog Theme-->
+    <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
