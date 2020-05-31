@@ -1,6 +1,6 @@
 Bundle bundle = getIntent().getExtras();
 
-        if (bundle != null) {
+if (bundle != null) {
 
-            pdfUrl = bundle.getString("pdf_url");
-        }
+        String name = bundle.getString("name");
+ }
