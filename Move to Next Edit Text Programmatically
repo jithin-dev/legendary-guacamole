@@ -5,9 +5,9 @@ et1.addTextChangedListener(new TextWatcher() {
     public void onTextChanged(CharSequence s, int start,int before, int count) 
     {
         // TODO Auto-generated method stub
-        if(et1.getText().toString().length()==size)     //size as per your requirement
+        if(phoneEdit.getText().toString().length() == size) // size as per your requirement
         {
-            et2.requestFocus();
+            passwordEdit.requestFocus();
         }
     }
     public void beforeTextChanged(CharSequence s, int start,
