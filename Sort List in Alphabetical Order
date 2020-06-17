@@ -1,0 +1,17 @@
+// In Alphabetical order
+
+Collections.sort(list, new Comparator<String>() {
+            @Override
+            public int compare(String s1, String s2) {
+                return s1.compareTo(s2);
+            }
+        });
+
+// If you want it ignoreCase:
+
+Collections.sort(list, new Comparator<String>() {
+        @Override
+        public int compare(String s1, String s2) {
+            return s1.compareToIgnoreCase(s2);
+        }
+    });
