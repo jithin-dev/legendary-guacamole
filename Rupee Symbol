@@ -1,0 +1,4 @@
+// Rupee Symbol Programatically
+
+Textview indian;
+indian.setText("\u20B9 10,000");
