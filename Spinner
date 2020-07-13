@@ -1,1 +1,20 @@
 
+Spinner dynamicListSpinner = findViewById(R.id.dynamic_list_spinner);
+
+        // Custom choices
+        List<CharSequence> choices = new ArrayList<>();
+        choices.add("Earth");
+        choices.add("Mars");
+        choices.add("Venus");
+        choices.add("Jupiter");
+        choices.add("Mercury");
+        choices.add("Uranus");
+
+        // Create an ArrayAdapter with custom choices
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, choices);
+
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Set the adapter to th spinner
+        dynamicListSpinner.setAdapter(adapter);
