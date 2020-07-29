@@ -4,3 +4,10 @@ if (bundle != null) {
 
         String name = bundle.getString("name");
  }
+
+// Intent pass Array
+ArrayList<String> myList = new ArrayList<String>();
+intent.putExtra("mylist", (Serializable)myList);
+
+// In the other Activity:
+ArrayList<String> myList = (ArrayList<String>) getIntent().getSerializableExtra("mylist");
