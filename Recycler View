@@ -148,3 +148,13 @@ public class ScrapLiveAdapter extends RecyclerView.Adapter<ScrapLiveAdapter.View
 
                             recyclerView.setItemViewCacheSize(auctionRoomModelList.size());
                             recyclerView.setAdapter(auctionRoomAdapter);
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
