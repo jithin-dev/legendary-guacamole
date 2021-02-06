@@ -1,1 +1,106 @@
 // Volley POST request
+
+        // create a ProgressDialog instance, with a specified theme:
+        progressDialog = new ProgressDialog(LoginActivity.this, R.style.AppCompatAlertDialogStyle);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setTitle("");
+        progressDialog.setMessage("Loading..");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        int versionCode = 0;
+
+        try {
+            PackageInfo pInfo = LoginActivity.this.getPackageManager().getPackageInfo(getPackageName(), 0);
+            versionCode = pInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        String URL = "YOUR API HERE";
+        System.out.println("// Login api: " + URL);
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+
+            jsonObject.put("user_email", userEdit.getText().toString());
+            jsonObject.put("user_password", passwordEdit.getText().toString());
+            jsonObject.put("app_version", versionCode);
+
+        } catch (JSONException e) {
+            Log.e("JSONObject Here", e.toString());
+        }
+
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        progressDialog.dismiss();
+
+                        System.out.println("// Login Response: "+response);
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(String.valueOf(response));
+                            String mResult = jsonObject.getString("result");
+
+                            if (mResult.equalsIgnoreCase("Success")) {
+
+                                String userId = jsonObject.getString("userId");
+                                String userName = jsonObject.getString("userName");
+
+                                // If Success, save in Shared preferences
+                                SharedPreferences.Editor e = sharedPreferences.edit();
+                                e.putString(UserEmail, userEdit.getText().toString());
+                                e.putString(UserName, userName);
+                                e.putString(Password, passwordEdit.getText().toString());
+                                e.putString(UserId, userId);
+                                e.putString(Status, "1");
+                                e.apply();
+
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+
+                            } else {
+                                String mMessage = jsonObject.getString("message");
+
+                                Snackbar snackbar = Snackbar.make(coordinatorLayout, mMessage, Snackbar.LENGTH_LONG);
+                                snackbar.show();
+                            }
+
+                        } catch (JSONException e) {
+
+                            e.printStackTrace();
+
+                            Snackbar snackbar = Snackbar.make(coordinatorLayout, "Something went wrong!", Snackbar.LENGTH_LONG);
+                            snackbar.show();
+                        }
+                        //  progressDialog.dismiss();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                progressDialog.dismiss();
+
+                Snackbar snackbar = Snackbar.make(coordinatorLayout, "Something went wrong, Please try again!", Snackbar.LENGTH_LONG);
+                snackbar.setDuration(4000);
+                snackbar.show();
+
+                Log.e("Message from server", volleyError.toString());
+            }
+        });
+
+        // Timeout added 20 seconds
+        //**
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                20000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonObjectRequest);
+        
+        
+        
